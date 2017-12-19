@@ -1,0 +1,29 @@
+#
+* File comment :noexport:
+
+- Copyright (C) 2017-2017 Michael Brand <michael.ch.brand at gmail.com>
+- Licensed under GPLv3, see http://www.gnu.org/licenses/gpl-3.0.html
+- URL: http://github.com/brandm/ascii_bar_graph_with_grid
+
+* Summary
+
+Python 3 module to draw an ASCII bar graph.
+
+See the examples for the unit tests of orgtbl_ascii_draw (a Python
+reimplementation of the Emacs Lisp function orgtbl-ascii-draw from Emacs Org
+mode) in the source file.
+
+* File config :noexport:
+
+# Do not indent "#+" for compatibility with any exporter.
+
+# For any possibly not so perfect exporter with an issue like
+# http://github.com/wallyqs/org-ruby/issues/26
+#+EXCLUDE_TAGS: noexport
+# Support the old name too.
+#+EXPORT_EXCLUDE_TAGS: noexport
+
+# Local Variables:
+#   coding: us-ascii-unix
+#   fill-column: 76
+# End:
