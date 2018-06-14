@@ -1,17 +1,40 @@
-#
+
 * File comment :noexport:
 
-- Copyright (C) 2017-2017 Michael Brand <michael.ch.brand at gmail.com>
+- Copyright (C) 2017-2018 Michael Brand <michael.ch.brand at gmail.com>
 - Licensed under GPLv3, see http://www.gnu.org/licenses/gpl-3.0.html
 - URL: http://github.com/brandm/ascii_bar_graph_with_grid
 
 * Summary
 
-Python 3 module to draw an ASCII bar graph.
+Python 3 module to draw an ASCII bar graph with optional major and minor
+grid.
 
-See the examples for the unit tests of orgtbl_ascii_draw (a Python
-reimplementation of the Emacs Lisp function orgtbl-ascii-draw from Emacs Org
-mode) in the source file.
+Some examples with a major grid every 100 and a minor grid every 20:
+#+begin_src python :eval no
+#                                   0        100       200       300
+bar_graph( 98, 10, 31, 2, 5)  # => '█▉█▉█▉█▉█▊                     '
+bar_graph( 99, 10, 31, 2, 5)  # => '█▉█▉█▉█▉█▉                     '
+bar_graph(100, 10, 31, 2, 5)  # => '█▉█▉█▉█▉██                     '
+bar_graph(101, 10, 31, 2, 5)  # => '█▉█▉█▉█▉█▊▏                    '
+bar_graph(102, 10, 31, 2, 5)  # => '█▉█▉█▉█▉█▊▎                    '
+bar_graph(104, 10, 31, 2, 5)  # => '█▉█▉█▉█▉█▊▍                    '
+bar_graph(105, 10, 31, 2, 5)  # => '█▉█▉█▉█▉█▊▌                    '
+bar_graph(106, 10, 31, 2, 5)  # => '█▉█▉█▉█▉█▊▋                    '
+bar_graph(107, 10, 31, 2, 5)  # => '█▉█▉█▉█▉█▊▊                    '
+bar_graph(109, 10, 31, 2, 5)  # => '█▉█▉█▉█▉█▊▉                    '
+bar_graph(110, 10, 31, 2, 5)  # => '█▉█▉█▉█▉█▊█                    '
+bar_graph(120, 10, 31, 2, 5)  # => '█▉█▉█▉█▉█▊██                   '
+bar_graph(140, 10, 31, 2, 5)  # => '█▉█▉█▉█▉█▊█▉██                 '
+bar_graph(160, 10, 31, 2, 5)  # => '█▉█▉█▉█▉█▊█▉█▉██               '
+bar_graph(200, 10, 31, 2, 5)  # => '█▉█▉█▉█▉█▊█▉█▉█▉█▉██           '
+bar_graph(300, 10, 31, 2, 5)  # => '█▉█▉█▉█▉█▊█▉█▉█▉█▉█▊█▉█▉█▉█▉██ '
+#+end_src
+
+See also the examples for the unit tests of the function ~bar_graph~ in the
+source file for indication of under- and overflow and more. There is also
+~orgtbl_ascii_draw~, a Python reimplementation of the Emacs Lisp function
+~orgtbl-ascii-draw~ from Emacs Org mode.
 
 * File config :noexport:
 
@@ -24,6 +47,6 @@ mode) in the source file.
 #+EXPORT_EXCLUDE_TAGS: noexport
 
 # Local Variables:
-#   coding: us-ascii-unix
+#   coding: utf-8-unix
 #   fill-column: 76
 # End:
