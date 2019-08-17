@@ -22,7 +22,19 @@ if _lc:
     _ = sys.executable, sys.version
 
     def regression_test_failures(function, tests):
-        """See docstring of feature.el:f-regression-test-failures.
+        """Test FUNCTION with TESTS and list the failures.
+
+        TESTS is a list of lists with the expected result and the
+        corresponding function arguments. Returns a list of lists with the
+        expected result, the function result and the function arguments of
+        the test cases where the function result is not as expected. The
+        list is empty when there is no regression.
+
+        Examples:
+
+        0 failure: regression_test_failures(int, [[10, "10"], [2, "10", 2]])
+
+        1 failure: regression_test_failures(int, [[10, "10"], [2, "10", 4]])
         """
         # - Keep in sync with feature.el:f-regression-test-failures.
         # - TODO: Rename function and move definition into a common test
@@ -32,6 +44,14 @@ if _lc:
                 for expected, *arguments in tests
                 for result in [function(*arguments)]
                 if expected != result]
+
+    def regression_test_failures_doubled_result_string(function, tests):
+        """Very similar to regression_test_failures, which see.
+        """
+        return [[expected, 2 * result, *arguments]
+                for expected, *arguments in tests
+                for result in [function(*arguments)]
+                if expected != 2 * result]
 
     def single_argument_plus_minus_offset(tests):
         """Add +/- offset to tests with a single argument.
@@ -77,11 +97,14 @@ def orgtbl_ascii_draw(value, min, max, width=None, characters=None):
 
 # ** Unit tests.
 if _lc:
+    from functools import partial
+
     # The same use cases as Emacs Org mode ert-deftest
     # test-org-table/orgtbl-ascii-draw
 
     _failures = regression_test_failures(
-        lambda x: orgtbl_ascii_draw(x, 0, 24, 3, " 12345678"),
+        partial(orgtbl_ascii_draw,
+                min=0, max=24, width=3, characters=" 12345678"),
         single_argument_plus_minus_offset(
             [
                 ["too small", -1],
@@ -94,7 +117,7 @@ if _lc:
             ]))
 
     _failures = regression_test_failures(
-        lambda x: orgtbl_ascii_draw(x, 0, 3, 3, "$-"),
+        partial(orgtbl_ascii_draw, min=0, max=3, width=3, characters="$-"),
         single_argument_plus_minus_offset(
             [
                 ["too small", -1],
@@ -166,9 +189,14 @@ def bar_graph(val, val_per_char, char_total,
 
 # ** Unit tests.
 if _lc:
+    # Doubled result strings to see how adjacent graphs can visually be
+    # distinguished.
+
+    from functools import partial
+
     # Bar graph with tiny under- and overflow indicators (without grid).
-    _failures = regression_test_failures(
-        lambda x: 2 * bar_graph(x, 8, 1),
+    _failures = regression_test_failures_doubled_result_string(
+        partial(bar_graph, val_per_char=8, char_total=1),
         single_argument_plus_minus_offset(
             [
                 ["╢╢", -1],  # Underflow indication for char_total == 1
@@ -185,8 +213,8 @@ if _lc:
             ]))
 
     # Bar graph with grid.
-    _failures = regression_test_failures(
-        lambda x: 2 * bar_graph(x, 8, 2, 1),
+    _failures = regression_test_failures_doubled_result_string(
+        partial(bar_graph, val_per_char=8, char_total=2, char_per_minor=1),
         single_argument_plus_minus_offset(
             [
                 ["▒ ▒ ", -1],  # Underflow indication for char_total > 1
@@ -200,8 +228,9 @@ if _lc:
             ]))
 
     # Bar graph with major and minor grid.
-    _failures = regression_test_failures(
-        lambda x: 2 * bar_graph(x, 8, 4, 1, 2),
+    _failures = regression_test_failures_doubled_result_string(
+        partial(bar_graph, val_per_char=8, char_total=4,
+                char_per_minor=1, minor_per_major=2),
         single_argument_plus_minus_offset(
             [
                 ["▒   ▒   ", -1],  # Underflow indication for char_total > 1
@@ -242,8 +271,9 @@ if _lc:
             ]))
 
     # Some larger examples.
-    _failures = regression_test_failures(
-        lambda x: 2 * bar_graph(x, 8, 13, 3, 2),
+    _failures = regression_test_failures_doubled_result_string(
+        partial(bar_graph, val_per_char=8, char_total=13,
+                char_per_minor=3, minor_per_major=2),
         single_argument_plus_minus_offset(
             [
                 ["▒            ▒            ",  -1],
