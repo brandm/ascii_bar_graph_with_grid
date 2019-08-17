@@ -18,7 +18,7 @@ grid.
 # * Live coding
 _lc = __name__ == '__live_coding__'  # Global ingredients, global value
 if _lc:
-    import sys
+    import sys # Trigger E261 with this comment to verify that flake8 works
     _ = sys.executable, sys.version
 
     def regression_test_failures(function, tests):
@@ -71,7 +71,7 @@ def orgtbl_ascii_draw(value, min, max, width=None, characters=None):
     else:
         int_division, remainder = divmod(steps, length)
         last_draw = characters[remainder]
-        if last_draw is ' ':
+        if last_draw == ' ':
             last_draw = ''
         return int_division * characters[-1] + last_draw
 
@@ -154,8 +154,8 @@ def bar_graph(val, val_per_char, char_total,
             this_char = "█"  # 8/8
             if next_pos < full or remainder:
                 if   (minor_per_major is not None
-                      and not next_pos % (char_per_minor *
-                                           minor_per_major)):
+                      and not next_pos % (char_per_minor
+                                          * minor_per_major)):
                     this_char = "▊"  # 6/8
                 elif (char_per_minor is not None
                       and not next_pos % char_per_minor):
